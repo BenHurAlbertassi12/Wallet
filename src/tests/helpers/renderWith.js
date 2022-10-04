@@ -5,6 +5,7 @@ import { Router } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import { render } from '@testing-library/react';
 import thunk from 'redux-thunk';
+// import rootReducer from '../../redux/reducers';
 import rootReducer from '../../redux/reducers';
 
 function withRouter(component, history) {
@@ -26,8 +27,8 @@ function withRedux(component, store) {
 export function renderWithRouter(
   component,
   {
-    initialEntries = ['/'],
-    history = createMemoryHistory({ initialEntries }),
+    initialPath = '/',
+    history = createMemoryHistory([initialPath]),
   } = {},
 ) {
   return {
@@ -38,8 +39,10 @@ export function renderWithRouter(
 
 export function renderWithRedux(component, options = {}) {
   const {
-    initialState = {},
-    store = createStore(rootReducer, initialState, applyMiddleware(thunk)),
+    initialState,
+    store = initialState
+      ? createStore(rootReducer, initialState, applyMiddleware(thunk))
+      : createStore(rootReducer, applyMiddleware(thunk)),
   } = options;
 
   return {
@@ -50,8 +53,8 @@ export function renderWithRedux(component, options = {}) {
 
 export function renderWithRouterAndRedux(component, options = {}) {
   const {
-    initialEntries = ['/'],
-    history = createMemoryHistory({ initialEntries }),
+    initialPath = '/',
+    history = createMemoryHistory([initialPath]),
   } = options;
 
   return {
