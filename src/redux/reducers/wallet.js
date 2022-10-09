@@ -1,7 +1,7 @@
 const estadoInicial = {
   currencies: [],
-  editor: false,
   expenses: [],
+  editor: false,
   idToEdit: 0,
 };
 
@@ -18,6 +18,14 @@ function wallet(state = estadoInicial, action) {
     return {
       ...state,
       currencies: action.currencies,
+    };
+
+  case 'DELETE_DESPESA':
+    return {
+      ...state,
+      expenses: [...state.expenses].filter(
+        (expense) => expense.id !== action.expenseId,
+      ),
     };
 
   default:

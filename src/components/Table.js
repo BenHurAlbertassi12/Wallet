@@ -1,8 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { deletaDespesa } from '../redux/actions';
 
 class Table extends Component {
+  // retirado da lecture/7.4/mentoria
+
+  removeDespesa = (expenseId) => {
+    const { deletaDespesa: actionDelete } = this.props;
+    actionDelete(expenseId);
+  };
+
   render() {
     const { tabelaDeDespesas,
     } = this.props;
@@ -24,8 +32,8 @@ class Table extends Component {
           </thead>
           <tbody>
             {tabelaDeDespesas
-              .map((expense, index) => (
-                <tr key={ index }>
+              .map((expense) => (
+                <tr key={ expense.id }>
                   <td>{expense.description}</td>
                   <td>{expense.tag}</td>
                   <td>{expense.method}</td>
@@ -41,10 +49,19 @@ class Table extends Component {
                     ).toFixed(2)}
                   </td>
                   <td>Real</td>
-                  <td>Trabalho</td>
+                  {/* <td>Trabalho</td>
                   <td>Cartão de crédito</td>
                   <td>Cartão de débito</td>
-                  <td>Lazer</td>
+                  <td>Lazer</td> */}
+                  <td>
+                    <button
+                      type="button"
+                      data-testid="delete-btn"
+                      onClick={ () => this.removeDespesa(expense.id) }
+                    >
+                      Excluir
+                    </button>
+                  </td>
                 </tr>
               ))}
           </tbody>
@@ -53,16 +70,20 @@ class Table extends Component {
     );
   }
 }
+const mapDispatchToProps = (dispatch) => ({
+  deletaDespesa: (expenseId) => dispatch(deletaDespesa(expenseId)),
+});
 
 Table.propTypes = {
   tabelaDeDespesas: PropTypes.arrayOf.isRequired,
+  deletaDespesa: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   tabelaDeDespesas: state.wallet.expenses,
 });
 
-export default connect(mapStateToProps)(Table);
+export default connect(mapStateToProps, mapDispatchToProps)(Table);
 
 // linha 26 map comum como os feitos nos projetos anteriores
 // linha 35 e 40 parsefloat para "arredondar" os resultados

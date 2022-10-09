@@ -12,6 +12,13 @@ export function setWalletData(walletData) {
   };
 }
 
+export function deletaDespesa(expenseId) {
+  return {
+    type: 'DELETE_DESPESA',
+    expenseId,
+  };
+}
+
 export const FETCH_PRECO_MOEDA = 'FETCH_PRECO_MOEDA';
 
 export const PRECO_MOEDA = 'PRECO_MOEDA';

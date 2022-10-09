@@ -10,8 +10,8 @@ class WalletForm extends Component {
       id: 0,
       value: '',
       currency: 'USD',
-      method: 'Cartão de crédito',
-      tag: 'Lazer',
+      method: 'Dinheiro',
+      tag: 'alimentação',
       description: '',
     };
   }
@@ -32,9 +32,9 @@ class WalletForm extends Component {
     this.setState((antes) => ({
       id: antes.id + 1,
       value: '',
-      currency: 'EUR',
-      method: 'Cartão de débito',
-      tag: 'Trabalho',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
       description: '',
     }));
   };
@@ -59,18 +59,21 @@ class WalletForm extends Component {
           required
         />
 
-        <select
-          data-testid="currency-input"
-          name="currency"
-          id="currency"
-          value={ currency }
-        >
-          {coinOptions.map((siglaMoeda) => (
-            <option key={ siglaMoeda } value={ siglaMoeda }>
-              {siglaMoeda}
-            </option>
-          ))}
-        </select>
+        <label htmlFor="currency">
+          <select
+            name="currency"
+            id="currency"
+            data-testid="currency-input"
+            value={ currency }
+            onChange={ this.manupularTroca }
+          >
+            {coinOptions.map((siglaMoeda) => (
+              <option key={ siglaMoeda } value={ siglaMoeda }>
+                {siglaMoeda}
+              </option>
+            ))}
+          </select>
+        </label>
 
         Descrição:
         <input
@@ -82,18 +85,36 @@ class WalletForm extends Component {
           required
         />
 
-        <select data-testid="method-input" name="method" value={ method }>
-          <option>Dinheiro</option>
-          <option>Cartão de crédito</option>
-          <option>Cartão de débito</option>
-        </select>
-        <select data-testid="tag-input" name="tag" value={ tag }>
-          <option name="select">Alimentação</option>
-          <option>Lazer</option>
-          <option>Trabalho</option>
-          <option>Transporte</option>
-          <option>Saúde</option>
-        </select>
+        <label htmlFor="method">
+          Método de Pagamento:
+          <select
+            id="method"
+            data-testid="method-input"
+            name="method"
+            value={ method }
+            onChange={ this.manupularTroca }
+          >
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Cartão de crédito">Cartão de crédito</option>
+            <option value="Cartão de débito">Cartão de débito</option>
+          </select>
+        </label>
+        <label htmlFor="tag">
+          Tag:
+          <select
+            id="tag"
+            data-testid="tag-input"
+            name="tag"
+            value={ tag }
+            onChange={ this.manupularTroca }
+          >
+            <option value="Alimentação">Alimentação</option>
+            <option value="Lazer">Lazer</option>
+            <option value="Trabalho">Trabalho</option>
+            <option value="Transporte">Transporte</option>
+            <option value="Saúde">Saúde</option>
+          </select>
+        </label>
 
         <button type="button" onClick={ this.manipularClick }>
           {' '}
@@ -111,7 +132,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) => ({
-  fetchCurrance: state.wallet.expenses,
+  // fetchCurrance: state.wallet.expenses,
   coinOptions: state.wallet.currencies,
 });
 
